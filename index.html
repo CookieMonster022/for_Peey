@@ -9,218 +9,276 @@
         :root {
             --primary-pink: #ff4d6d;
             --deep-red: #c9184a;
-            --bg-gradient: linear-gradient(135deg, #fff0f3 0%, #ffccd5 100%);
+            --gold: #ffb703;
+            --glass: rgba(255, 255, 255, 0.85);
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background: var(--bg-gradient);
-            font-family: 'Quicksand', sans-serif;
-            overflow: hidden;
+            margin: 0; padding: 0;
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; 
+            background: linear-gradient(-45deg, #ff4d6d, #c9184a, #ff758c, #ff4d6d);
+            background-size: 400% 400%;
+            animation: gradientBG 10s ease infinite;
+            font-family: 'Quicksand', sans-serif; overflow: hidden;
+            touch-action: manipulation;
         }
 
-        .heart-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-        }
+        @keyframes gradientBG { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
 
-        .floating-heart {
-            position: absolute;
-            opacity: 0.5;
-            animation: float 8s infinite linear;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(110vh) scale(1); }
-            100% { transform: translateY(-20vh) scale(1.5); }
-        }
-
-        #container {
-            position: relative;
-            z-index: 10;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            padding: 2rem 1.5rem;
-            border-radius: 30px;
-            box-shadow: 0 20px 50px rgba(255, 77, 109, 0.3);
-            border: 3px solid white;
-            width: 85%;
-            max-width: 450px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        h1 {
-            font-family: 'Dancing Script', cursive;
-            color: var(--primary-pink);
-            font-size: clamp(1.8rem, 8vw, 2.5rem);
-            margin-bottom: 1rem;
-        }
-
-        .buttons {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            margin-top: 2rem;
-            min-height: 150px;
-            position: relative;
-        }
-
-        button {
-            padding: 12px 30px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-family: 'Quicksand', sans-serif;
-            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        #yesBtn {
-            background-color: var(--primary-pink);
-            color: white;
-            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
-            z-index: 1000;
-            position: relative;
-        }
-
-        #noBtn {
-            background-color: #fff;
-            color: #6c757d;
-            border: 2px solid #ffccd5;
-            z-index: 999;
-            white-space: nowrap;
-            position: relative; 
-        }
-
-        .celebration {
+        /* Smooth Section Transitions */
+        .section {
             display: none;
-            animation: fadeIn 0.8s ease-out;
+            opacity: 0;
+            transform: scale(0.9) translateY(20px);
+            transition: opacity 1.5s ease, transform 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .couple-img {
-            width: 100%;
-            height: auto;
-            max-height: 60vh;
-            object-fit: contain;
-            border-radius: 15px;
-            border: 5px solid white;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            margin-bottom: 15px;
+        .section.active {
+            display: block;
+            opacity: 1;
+            transform: scale(1) translateY(0);
         }
 
-        .celebration h2 {
-            font-family: 'Dancing Script', cursive;
-            color: var(--deep-red);
-            font-size: clamp(1.4rem, 5vw, 1.9rem);
-            line-height: 1.4;
-            margin: 0;
+        /* Background Heart Storm */
+        .heart-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .floating-emoji { position: absolute; opacity: 0.7; animation: floatUp 6s infinite linear; }
+        @keyframes floatUp { from { transform: translateY(110vh) rotate(0deg); opacity: 0; } to { transform: translateY(-20vh) rotate(360deg); opacity: 0.7; } }
+
+        /* Glass Card */
+        #container {
+            position: relative; z-index: 10;
+            background: var(--glass);
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            padding: 3rem 2rem; border-radius: 40px;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.3);
+            border: 4px solid rgba(255, 255, 255, 0.4);
+            width: 85%; max-width: 480px; text-align: center;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
+        .vibrate { animation: shake 0.2s infinite; }
+        @keyframes shake { 0% { transform: translate(3px, 3px); } 50% { transform: translate(-3px, -3px); } 100% { transform: translate(3px, -3px); } }
+
+        h1 { font-family: 'Dancing Script', cursive; color: var(--deep-red); font-size: clamp(2.2rem, 9vw, 3.2rem); margin: 0; }
+        
+        /* Orbit Setup */
+        .orbit-container { position: relative; height: 300px; display: flex; justify-content: center; align-items: center; margin-top: 20px; }
+        
+        #yesBtn { 
+            padding: 20px 50px; font-size: 1.5rem; background: var(--primary-pink); 
+            color: white; border-radius: 60px; border: none; z-index: 100;
+            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.5); cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+
+        #noBtn { 
+            position: absolute; padding: 12px 30px; background: white; 
+            border: 2px solid var(--primary-pink); border-radius: 50px;
+            color: #666; font-weight: 600; cursor: pointer; transition: all 0.2s ease;
+        }
+
+        /* Mini Game */
+        #game-canvas { position: relative; height: 350px; background: rgba(255,255,255,0.3); border-radius: 30px; overflow: hidden; margin: 20px 0; border: 2px dashed var(--primary-pink); }
+        .game-heart { position: absolute; cursor: pointer; font-size: 2.5rem; transition: all 0.1s linear; }
+        #motivation-text { font-weight: 700; color: var(--deep-red); height: 30px; font-size: 1.3rem; animation: pulseText 1s infinite; }
+        @keyframes pulseText { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); color: var(--primary-pink); } }
+
+        /* Finale Reveal */
+        .img-mask {
+            mask-image: radial-gradient(circle, black 40%, transparent 95%);
+            -webkit-mask-image: radial-gradient(circle, black 40%, transparent 95%);
+            animation: slowZoom 10s infinite alternate;
+        }
+        @keyframes slowZoom { from { transform: scale(1); } to { transform: scale(1.1); } }
+        .couple-img { width: 100%; height: auto; border-radius: 20px; }
+
+        /* Firework Styles */
+        .firework { position: fixed; pointer-events: none; z-index: 999; }
+        .sparkle-wand { position: fixed; pointer-events: none; z-index: 1000; border-radius: 50%; background: white; box-shadow: 0 0 15px 5px var(--gold); }
     </style>
 </head>
-<body>
+<body onmousemove="handleWand(event)">
 
     <div class="heart-bg" id="heartBg"></div>
 
     <div id="container">
-        <div id="main-content">
-            <h1>Will you be my valentines Peey🌹, MyAll💍💗</h1>
-            <div class="buttons" id="buttonArea">
-                <button id="yesBtn" onclick="celebrate()">Yes</button>
-                <button id="noBtn" onmouseover="moveNoButton()" onclick="moveNoButton()">No</button>
+        <div id="screen1" class="section active">
+            <h1>Be my Valentine, <br>Peey🌹</h1>
+            <p style="color: var(--deep-red); font-weight: 600;">You can't say no to love!</p>
+            <div class="orbit-container">
+                <button id="yesBtn" onclick="transitionTo(1, 2)">YES! ❤️</button>
+                <button id="noBtn" onmouseover="handleNoInteraction()">No</button>
             </div>
         </div>
 
-        <div id="celebration" class="celebration">
-            <img src="https://i.postimg.cc/sDrrSQBn/IMG-0443.jpg" class="couple-img" alt="Us">
-            <h2>I applaud the heavens for our unity and hope this valentines will be a memorable one for us sweetheart, I love you babe🌹</h2>
+        <div id="screen2" class="section">
+            <h1 style="font-size: 2rem;">Fight for our Love! ⚔️❤️</h1>
+            <div id="motivation-text">Catch 10 fast hearts!</div>
+            <div id="game-canvas"></div>
+            <div id="score" style="font-weight: bold; font-size: 1.2rem; color: var(--deep-red);">Captured: 0/10</div>
+        </div>
+
+        <div id="screen3" class="section">
+            <div class="img-mask">
+                <img src="https://i.postimg.cc/sDrrSQBn/IMG-0443.jpg" class="couple-img" alt="Us">
+            </div>
+            <h2 style="font-family: 'Dancing Script'; color: var(--deep-red); line-height: 1.4; font-size: 1.8rem;">
+                I applaud the heavens for our unity. May this Valentine's be the most memorable one yet. I love you, Peey! 🌹✨
+            </h2>
         </div>
     </div>
 
     <script>
-        // Floating Hearts
-        const heartBg = document.getElementById('heartBg');
-        const items = ['❤️', '💖', '💍', '🌹', '✨', '💗'];
-        for (let i = 0; i < 15; i++) {
-            const heart = document.createElement('div');
-            heart.className = 'floating-heart';
-            heart.innerText = items[Math.floor(Math.random() * items.length)];
-            heart.style.left = Math.random() * 95 + 'vw';
-            heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
-            heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
-            heartBg.appendChild(heart);
-        }
-
         let yesScale = 1;
-        let isFirstMove = true;
+        let orbitAngle = 0;
+        let gameScore = 0;
+        let gameActive = false;
+        let isFinalStage = false;
 
-        function moveNoButton() {
+        // --- BACKGROUND ---
+        const emojis = ['❤️', '💖', '💍', '🌹', '✨', '💗', '💎', '🌸'];
+        setInterval(() => {
+            const e = document.createElement('div');
+            e.className = 'floating-emoji';
+            e.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+            e.style.left = Math.random() * 100 + 'vw';
+            e.style.fontSize = (Math.random() * 25 + 20) + 'px';
+            e.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            document.getElementById('heartBg').appendChild(e);
+            setTimeout(() => e.remove(), 5000);
+        }, 150);
+
+        // --- ORBIT & NO BUTTON ---
+        function handleNoInteraction() {
             const noBtn = document.getElementById('noBtn');
             const yesBtn = document.getElementById('yesBtn');
-
-            if (isFirstMove) {
-                noBtn.style.position = 'fixed';
-                isFirstMove = false;
-            }
+            const container = document.getElementById('container');
             
-            const yesRect = yesBtn.getBoundingClientRect();
-            const yesCenterX = yesRect.left + yesRect.width / 2;
-            const yesCenterY = yesRect.top + yesRect.height / 2;
-            
-            // Tight circular radius around the Yes button
-            const minRadius = 90;
-            const maxRadius = 160;
-            
-            let newX, newY;
-            let attempts = 0;
-            let isValid = false;
+            // Screen Shake
+            container.classList.add('vibrate');
+            setTimeout(() => container.classList.remove('vibrate'), 300);
 
-            while (!isValid && attempts < 20) {
-                const angle = Math.random() * Math.PI * 2;
-                const dist = minRadius + Math.random() * (maxRadius - minRadius);
-                
-                newX = yesCenterX + Math.cos(angle) * dist - (noBtn.offsetWidth / 2);
-                newY = yesCenterY + Math.sin(angle) * dist - (noBtn.offsetHeight / 2);
-
-                // Ensure it stays inside the viewport with padding
-                const padding = 20;
-                if (newX > padding && newX < window.innerWidth - noBtn.offsetWidth - padding &&
-                    newY > padding && newY < window.innerHeight - noBtn.offsetHeight - padding) {
-                    isValid = true;
-                }
-                attempts++;
-            }
-
-            noBtn.style.left = newX + 'px';
-            noBtn.style.top = newY + 'px';
-            
-            yesScale += 0.15;
+            // Expand Yes Button
+            yesScale += 0.25;
             yesBtn.style.transform = `scale(${yesScale})`;
+
+            // Orbit Logic
+            orbitAngle += 1.5;
+            const radius = 140;
+            const x = Math.cos(orbitAngle) * radius;
+            const y = Math.sin(orbitAngle) * radius;
+            noBtn.style.transform = `translate(${x}px, ${y}px)`;
         }
 
-        function celebrate() {
-            document.getElementById('main-content').style.display = 'none';
-            document.getElementById('celebration').style.display = 'block';
-            document.getElementById('container').style.maxWidth = '550px';
-            document.body.style.overflowY = 'auto'; // Allow scrolling for message/image
+        // --- TRANSITION LOGIC ---
+        function transitionTo(from, to) {
+            const sFrom = document.getElementById(`screen${from}`);
+            const sTo = document.getElementById(`screen${to}`);
+            
+            sFrom.style.opacity = '0';
+            sFrom.style.transform = 'scale(1.2)';
+            
+            setTimeout(() => {
+                sFrom.classList.remove('active');
+                sTo.classList.add('active');
+                if(to === 2) startHeartGame();
+                if(to === 3) startFireworks();
+            }, 1000);
+        }
+
+        // --- MINI GAME ---
+        const motivationPhrases = ["Don't give up! 💪", "Fight for us! ❤️", "Almost there, baby! ✨", "Love is a journey! 🌹"];
+        
+        function startHeartGame() {
+            gameActive = true;
+            spawnMovingHeart();
+            setInterval(() => {
+                if(gameActive) document.getElementById('motivation-text').innerText = motivationPhrases[Math.floor(Math.random()*motivationPhrases.length)];
+            }, 2500);
+        }
+
+        function spawnMovingHeart() {
+            if (!gameActive) return;
+            const canvas = document.getElementById('game-canvas');
+            const h = document.createElement('div');
+            h.className = 'game-heart';
+            h.innerText = '💖';
+            h.style.left = '50%';
+            h.style.top = '50%';
+            canvas.appendChild(h);
+
+            let posX = Math.random() * 80;
+            let posY = Math.random() * 80;
+            let velX = (Math.random() - 0.5) * 4;
+            let velY = (Math.random() - 0.5) * 4;
+
+            const move = setInterval(() => {
+                posX += velX;
+                posY += velY;
+                if(posX < 0 || posX > 90) velX *= -1;
+                if(posY < 0 || posY > 90) velY *= -1;
+                h.style.left = posX + '%';
+                h.style.top = posY + '%';
+            }, 45);
+
+            h.onclick = () => {
+                clearInterval(move);
+                h.remove();
+                gameScore++;
+                document.getElementById('score').innerText = `Captured: ${gameScore}/10`;
+                if(gameScore < 10) spawnMovingHeart();
+                else {
+                    gameActive = false;
+                    transitionTo(2, 3);
+                }
+            };
+        }
+
+        // --- FIREWORKS & FINALE ---
+        function startFireworks() {
+            isFinalStage = true;
+            for(let i=0; i<15; i++) {
+                setTimeout(createFirework, i * 400);
+            }
+        }
+
+        function createFirework() {
+            const f = document.createElement('div');
+            f.innerText = ['🌸','✨','❤️','🔥','💥'][Math.floor(Math.random()*5)];
+            f.style.position = 'fixed';
+            f.style.left = Math.random() * 100 + 'vw';
+            f.style.top = '100vh';
+            f.style.fontSize = '2rem';
+            f.style.zIndex = '1000';
+            document.body.appendChild(f);
+
+            f.animate([
+                { transform: 'translateY(0) scale(1)', opacity: 1 },
+                { transform: `translateY(-${Math.random()*80 + 20}vh) scale(5)`, opacity: 0 }
+            ], { duration: 2000, easing: 'ease-out' });
+
+            setTimeout(() => f.remove(), 2000);
+        }
+
+        function handleWand(e) {
+            if(!isFinalStage) return;
+            for(let i=0; i<3; i++) {
+                const s = document.createElement('div');
+                s.className = 'sparkle-wand';
+                const size = Math.random() * 15 + 5;
+                s.style.width = size + 'px';
+                s.style.height = size + 'px';
+                s.style.left = e.clientX + 'px';
+                s.style.top = e.clientY + 'px';
+                document.body.appendChild(s);
+
+                s.animate([
+                    { transform: 'translate(0,0) scale(1)', opacity: 1 },
+                    { transform: `translate(${(Math.random()-0.5)*150}px, ${(Math.random()-0.5)*150}px) scale(0)`, opacity: 0 }
+                ], { duration: 1000 });
+
+                setTimeout(() => s.remove(), 1000);
+            }
         }
     </script>
 </body>
