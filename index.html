@@ -10,119 +10,127 @@
             --primary-pink: #ff4d6d;
             --deep-red: #c9184a;
             --gold: #ffb703;
-            --glass: rgba(255, 255, 255, 0.85);
+            --glass: rgba(255, 255, 255, 0.9);
         }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             margin: 0; padding: 0;
             display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; 
+            min-height: 100vh; width: 100vw;
             background: linear-gradient(-45deg, #ff4d6d, #c9184a, #ff758c, #ff4d6d);
             background-size: 400% 400%;
             animation: gradientBG 10s ease infinite;
             font-family: 'Quicksand', sans-serif; overflow: hidden;
-            touch-action: manipulation;
+            touch-action: none; /* Prevents accidental zooming/scrolling during game */
         }
 
         @keyframes gradientBG { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
 
-        /* Smooth Section Transitions */
         .section {
-            display: none;
-            opacity: 0;
-            transform: scale(0.9) translateY(20px);
-            transition: opacity 1.5s ease, transform 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: none; opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 1s ease, transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .section.active {
-            display: block;
-            opacity: 1;
-            transform: scale(1) translateY(0);
-        }
+        .section.active { display: block; opacity: 1; transform: scale(1); }
 
-        /* Background Heart Storm */
         .heart-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
-        .floating-emoji { position: absolute; opacity: 0.7; animation: floatUp 6s infinite linear; }
-        @keyframes floatUp { from { transform: translateY(110vh) rotate(0deg); opacity: 0; } to { transform: translateY(-20vh) rotate(360deg); opacity: 0.7; } }
+        .floating-emoji { position: absolute; opacity: 0.6; animation: floatUp 6s infinite linear; }
+        @keyframes floatUp { from { transform: translateY(110vh) rotate(0deg); opacity: 0; } to { transform: translateY(-20vh) rotate(360deg); opacity: 0.6; } }
 
-        /* Glass Card */
         #container {
             position: relative; z-index: 10;
             background: var(--glass);
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            padding: 3rem 2rem; border-radius: 40px;
-            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.3);
-            border: 4px solid rgba(255, 255, 255, 0.4);
-            width: 85%; max-width: 480px; text-align: center;
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            padding: 2rem 1.5rem; border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            width: 92%; max-width: 400px; text-align: center;
+            margin: 10px;
         }
 
         .vibrate { animation: shake 0.2s infinite; }
-        @keyframes shake { 0% { transform: translate(3px, 3px); } 50% { transform: translate(-3px, -3px); } 100% { transform: translate(3px, -3px); } }
+        @keyframes shake { 0% { transform: translate(2px, 2px); } 50% { transform: translate(-2px, -2px); } 100% { transform: translate(2px, -2px); } }
 
-        h1 { font-family: 'Dancing Script', cursive; color: var(--deep-red); font-size: clamp(2.2rem, 9vw, 3.2rem); margin: 0; }
+        h1 { font-family: 'Dancing Script', cursive; color: var(--deep-red); font-size: clamp(1.8rem, 8vw, 2.5rem); margin: 0; line-height: 1.2; }
         
-        /* Orbit Setup */
-        .orbit-container { position: relative; height: 300px; display: flex; justify-content: center; align-items: center; margin-top: 20px; }
+        .orbit-container { 
+            position: relative; height: 220px; 
+            display: flex; justify-content: center; align-items: center; 
+            margin-top: 20px; width: 100%;
+        }
         
         #yesBtn { 
-            padding: 20px 50px; font-size: 1.5rem; background: var(--primary-pink); 
-            color: white; border-radius: 60px; border: none; z-index: 100;
-            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.5); cursor: pointer;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            padding: 15px 40px; font-size: 1.3rem; background: var(--primary-pink); 
+            color: white; border-radius: 50px; border: none; z-index: 100;
+            box-shadow: 0 10px 25px rgba(255, 77, 109, 0.4); cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            white-space: nowrap;
         }
 
         #noBtn { 
-            position: absolute; padding: 12px 30px; background: white; 
+            position: absolute; padding: 10px 25px; background: white; 
             border: 2px solid var(--primary-pink); border-radius: 50px;
-            color: #666; font-weight: 600; cursor: pointer; transition: all 0.2s ease;
+            color: #666; font-weight: 600; cursor: pointer; 
+            transition: transform 0.2s ease-out;
+            z-index: 99;
         }
 
-        /* Mini Game */
-        #game-canvas { position: relative; height: 350px; background: rgba(255,255,255,0.3); border-radius: 30px; overflow: hidden; margin: 20px 0; border: 2px dashed var(--primary-pink); }
-        .game-heart { position: absolute; cursor: pointer; font-size: 2.5rem; transition: all 0.1s linear; }
-        #motivation-text { font-weight: 700; color: var(--deep-red); height: 30px; font-size: 1.3rem; animation: pulseText 1s infinite; }
-        @keyframes pulseText { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); color: var(--primary-pink); } }
+        /* Mini Game Mobile Fix */
+        #game-canvas { 
+            position: relative; height: 40vh; max-height: 300px; 
+            background: rgba(255,255,255,0.4); border-radius: 20px; 
+            overflow: hidden; margin: 15px 0; border: 2px dashed var(--primary-pink); 
+        }
+        .game-heart { 
+            position: absolute; cursor: pointer; font-size: 2.5rem; 
+            padding: 10px; /* Bigger hit area for fingers */
+            transform: translate(-50%, -50%);
+        }
+        #motivation-text { font-weight: 700; color: var(--deep-red); min-height: 40px; font-size: 1.1rem; }
 
         /* Finale Reveal */
         .img-mask {
-            mask-image: radial-gradient(circle, black 40%, transparent 95%);
-            -webkit-mask-image: radial-gradient(circle, black 40%, transparent 95%);
-            animation: slowZoom 10s infinite alternate;
+            mask-image: radial-gradient(circle, black 50%, transparent 95%);
+            -webkit-mask-image: radial-gradient(circle, black 50%, transparent 95%);
+            width: 100%; overflow: hidden; border-radius: 15px;
         }
-        @keyframes slowZoom { from { transform: scale(1); } to { transform: scale(1.1); } }
-        .couple-img { width: 100%; height: auto; border-radius: 20px; }
+        .couple-img { width: 100%; height: auto; display: block; object-fit: contain; }
 
-        /* Firework Styles */
-        .firework { position: fixed; pointer-events: none; z-index: 999; }
-        .sparkle-wand { position: fixed; pointer-events: none; z-index: 1000; border-radius: 50%; background: white; box-shadow: 0 0 15px 5px var(--gold); }
+        .sparkle-wand { 
+            position: fixed; pointer-events: none; z-index: 1000; 
+            border-radius: 50%; background: white; box-shadow: 0 0 10px 3px var(--gold); 
+        }
     </style>
 </head>
-<body onmousemove="handleWand(event)">
+<body onmousemove="handleWand(event)" ontouchmove="handleWand(event.touches[0])">
 
     <div class="heart-bg" id="heartBg"></div>
 
     <div id="container">
         <div id="screen1" class="section active">
             <h1>Be my Valentine, <br>Peey🌹</h1>
-            <p style="color: var(--deep-red); font-weight: 600;">You can't say no to love!</p>
-            <div class="orbit-container">
+            <p style="color: var(--deep-red); font-weight: 600; font-size: 0.9rem; margin-top: 8px;">(You can't say no to love!)</p>
+            <div class="orbit-container" id="orbitArea">
                 <button id="yesBtn" onclick="transitionTo(1, 2)">YES! ❤️</button>
-                <button id="noBtn" onmouseover="handleNoInteraction()">No</button>
+                <button id="noBtn" onmouseover="handleNoInteraction()" ontouchstart="handleNoInteraction()">No</button>
             </div>
         </div>
 
         <div id="screen2" class="section">
-            <h1 style="font-size: 2rem;">Fight for our Love! ⚔️❤️</h1>
+            <h1>Fight for us! ⚔️❤️</h1>
             <div id="motivation-text">Catch 10 fast hearts!</div>
-            <div id="game-canvas"></div>
-            <div id="score" style="font-weight: bold; font-size: 1.2rem; color: var(--deep-red);">Captured: 0/10</div>
+            <div id="game-canvas" id="canvas"></div>
+            <div id="score" style="font-weight: bold; color: var(--deep-red);">Captured: 0/10</div>
         </div>
 
         <div id="screen3" class="section">
             <div class="img-mask">
                 <img src="https://i.postimg.cc/sDrrSQBn/IMG-0443.jpg" class="couple-img" alt="Us">
             </div>
-            <h2 style="font-family: 'Dancing Script'; color: var(--deep-red); line-height: 1.4; font-size: 1.8rem;">
+            <h2 style="font-family: 'Dancing Script'; color: var(--deep-red); line-height: 1.4; font-size: 1.5rem; margin-top: 15px;">
                 I applaud the heavens for our unity. May this Valentine's be the most memorable one yet. I love you, Peey! 🌹✨
             </h2>
         </div>
@@ -135,66 +143,57 @@
         let gameActive = false;
         let isFinalStage = false;
 
-        // --- BACKGROUND ---
-        const emojis = ['❤️', '💖', '💍', '🌹', '✨', '💗', '💎', '🌸'];
+        // Background Emojis
+        const emojis = ['❤️', '💖', '💍', '🌹', '✨', '💗'];
         setInterval(() => {
             const e = document.createElement('div');
             e.className = 'floating-emoji';
             e.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-            e.style.left = Math.random() * 100 + 'vw';
-            e.style.fontSize = (Math.random() * 25 + 20) + 'px';
+            e.style.left = Math.random() * 90 + 'vw';
+            e.style.fontSize = (Math.random() * 20 + 15) + 'px';
             e.style.animationDuration = (Math.random() * 3 + 4) + 's';
             document.getElementById('heartBg').appendChild(e);
             setTimeout(() => e.remove(), 5000);
-        }, 150);
+        }, 300);
 
-        // --- ORBIT & NO BUTTON ---
         function handleNoInteraction() {
             const noBtn = document.getElementById('noBtn');
             const yesBtn = document.getElementById('yesBtn');
             const container = document.getElementById('container');
             
-            // Screen Shake
             container.classList.add('vibrate');
-            setTimeout(() => container.classList.remove('vibrate'), 300);
+            setTimeout(() => container.classList.remove('vibrate'), 200);
 
-            // Expand Yes Button
-            yesScale += 0.25;
+            yesScale = Math.min(yesScale + 0.15, 2.5);
             yesBtn.style.transform = `scale(${yesScale})`;
 
-            // Orbit Logic
-            orbitAngle += 1.5;
-            const radius = 140;
+            orbitAngle += 0.8;
+            // Mobile-friendly orbit radius
+            const radius = Math.min(window.innerWidth * 0.25, 100);
             const x = Math.cos(orbitAngle) * radius;
             const y = Math.sin(orbitAngle) * radius;
             noBtn.style.transform = `translate(${x}px, ${y}px)`;
         }
 
-        // --- TRANSITION LOGIC ---
         function transitionTo(from, to) {
             const sFrom = document.getElementById(`screen${from}`);
             const sTo = document.getElementById(`screen${to}`);
-            
             sFrom.style.opacity = '0';
-            sFrom.style.transform = 'scale(1.2)';
-            
             setTimeout(() => {
                 sFrom.classList.remove('active');
                 sTo.classList.add('active');
                 if(to === 2) startHeartGame();
                 if(to === 3) startFireworks();
-            }, 1000);
+            }, 800);
         }
 
-        // --- MINI GAME ---
-        const motivationPhrases = ["Don't give up! 💪", "Fight for us! ❤️", "Almost there, baby! ✨", "Love is a journey! 🌹"];
-        
         function startHeartGame() {
             gameActive = true;
             spawnMovingHeart();
+            const phrases = ["Fight for our love! ❤️", "Don't let go! 💪", "You've got this, Peey!", "Nearly there! ✨"];
             setInterval(() => {
-                if(gameActive) document.getElementById('motivation-text').innerText = motivationPhrases[Math.floor(Math.random()*motivationPhrases.length)];
-            }, 2500);
+                if(gameActive) document.getElementById('motivation-text').innerText = phrases[Math.floor(Math.random()*phrases.length)];
+            }, 2000);
         }
 
         function spawnMovingHeart() {
@@ -203,82 +202,57 @@
             const h = document.createElement('div');
             h.className = 'game-heart';
             h.innerText = '💖';
-            h.style.left = '50%';
-            h.style.top = '50%';
             canvas.appendChild(h);
 
-            let posX = Math.random() * 80;
-            let posY = Math.random() * 80;
-            let velX = (Math.random() - 0.5) * 4;
-            let velY = (Math.random() - 0.5) * 4;
+            let posX = 50, posY = 50;
+            let velX = (Math.random() - 0.5) * 6; // Adjusted for mobile visibility
+            let velY = (Math.random() - 0.5) * 6;
 
             const move = setInterval(() => {
-                posX += velX;
-                posY += velY;
-                if(posX < 0 || posX > 90) velX *= -1;
-                if(posY < 0 || posY > 90) velY *= -1;
+                posX += velX; posY += velY;
+                if(posX < 10 || posX > 90) velX *= -1;
+                if(posY < 10 || posY > 90) velY *= -1;
                 h.style.left = posX + '%';
                 h.style.top = posY + '%';
-            }, 45);
+            }, 30);
 
-            h.onclick = () => {
+            h.onclick = h.ontouchstart = (e) => {
+                e.preventDefault();
                 clearInterval(move);
                 h.remove();
                 gameScore++;
                 document.getElementById('score').innerText = `Captured: ${gameScore}/10`;
                 if(gameScore < 10) spawnMovingHeart();
-                else {
-                    gameActive = false;
-                    transitionTo(2, 3);
-                }
+                else { gameActive = false; transitionTo(2, 3); }
             };
         }
 
-        // --- FIREWORKS & FINALE ---
         function startFireworks() {
             isFinalStage = true;
-            for(let i=0; i<15; i++) {
-                setTimeout(createFirework, i * 400);
+            for(let i=0; i<12; i++) {
+                setTimeout(() => {
+                    const f = document.createElement('div');
+                    f.innerText = ['🌸','✨','❤️','💥'][Math.floor(Math.random()*4)];
+                    f.style.position = 'fixed';
+                    f.style.left = Math.random() * 90 + 'vw';
+                    f.style.top = '100vh';
+                    f.style.fontSize = '2rem';
+                    document.body.appendChild(f);
+                    f.animate([{transform: 'translateY(0)', opacity: 1}, {transform: `translateY(-80vh) scale(4)`, opacity: 0}], {duration: 2000});
+                    setTimeout(() => f.remove(), 2000);
+                }, i * 400);
             }
-        }
-
-        function createFirework() {
-            const f = document.createElement('div');
-            f.innerText = ['🌸','✨','❤️','🔥','💥'][Math.floor(Math.random()*5)];
-            f.style.position = 'fixed';
-            f.style.left = Math.random() * 100 + 'vw';
-            f.style.top = '100vh';
-            f.style.fontSize = '2rem';
-            f.style.zIndex = '1000';
-            document.body.appendChild(f);
-
-            f.animate([
-                { transform: 'translateY(0) scale(1)', opacity: 1 },
-                { transform: `translateY(-${Math.random()*80 + 20}vh) scale(5)`, opacity: 0 }
-            ], { duration: 2000, easing: 'ease-out' });
-
-            setTimeout(() => f.remove(), 2000);
         }
 
         function handleWand(e) {
             if(!isFinalStage) return;
-            for(let i=0; i<3; i++) {
-                const s = document.createElement('div');
-                s.className = 'sparkle-wand';
-                const size = Math.random() * 15 + 5;
-                s.style.width = size + 'px';
-                s.style.height = size + 'px';
-                s.style.left = e.clientX + 'px';
-                s.style.top = e.clientY + 'px';
-                document.body.appendChild(s);
-
-                s.animate([
-                    { transform: 'translate(0,0) scale(1)', opacity: 1 },
-                    { transform: `translate(${(Math.random()-0.5)*150}px, ${(Math.random()-0.5)*150}px) scale(0)`, opacity: 0 }
-                ], { duration: 1000 });
-
-                setTimeout(() => s.remove(), 1000);
-            }
+            const s = document.createElement('div');
+            s.className = 'sparkle-wand';
+            s.style.width = '10px'; s.style.height = '10px';
+            s.style.left = e.clientX + 'px'; s.style.top = e.clientY + 'px';
+            document.body.appendChild(s);
+            s.animate([{transform: 'scale(1)', opacity: 1}, {transform: `translate(${(Math.random()-0.5)*100}px, ${(Math.random()-0.5)*100}px) scale(0)`, opacity: 0}], {duration: 800});
+            setTimeout(() => s.remove(), 800);
         }
     </script>
 </body>
