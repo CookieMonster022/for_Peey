@@ -1,264 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>For Peey🌹</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-pink: #ff4d6d;
-            --deep-red: #c9184a;
-            --gold: #ffb703;
-            --glass: rgba(255, 255, 255, 0.92);
-        }
-
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-        body {
-            margin: 0; padding: 0;
-            display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; width: 100vw;
-            background: linear-gradient(-45deg, #ff4d6d, #c9184a, #ff758c, #ff4d6d);
-            background-size: 400% 400%;
-            animation: gradientBG 10s ease infinite;
-            font-family: 'Quicksand', sans-serif; overflow: hidden;
-            touch-action: none;
-        }
-
-        @keyframes gradientBG { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
-
-        /* The New Slow Reveal Overlay */
-        #reveal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--primary-pink); z-index: 2000;
-            opacity: 0; pointer-events: none;
-            transition: opacity 1.5s ease-in-out;
-        }
-
-        /* Smooth Section Transitions */
-        .section {
-            display: none; opacity: 0;
-            transform: translateY(30px) scale(0.95);
-            transition: opacity 2.5s cubic-bezier(0.4, 0, 0.2, 1), transform 2.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .section.active { display: flex; flex-direction: column; align-items: center; opacity: 1; transform: translateY(0) scale(1); }
-
-        .heart-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
-        .floating-emoji { position: absolute; opacity: 0.6; animation: floatUp 6s infinite linear; }
-        @keyframes floatUp { from { transform: translateY(110vh); opacity: 0; } to { transform: translateY(-20vh); opacity: 0.6; } }
-
-        #container {
-            position: relative; z-index: 10;
-            background: var(--glass);
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            padding: 1.5rem; border-radius: 35px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
-            width: 92%; max-width: 400px; max-height: 90vh; /* Prevents cutting off */
-            text-align: center; overflow-y: auto; overflow-x: hidden;
-        }
-
-        .vibrate { animation: shake 0.2s infinite; }
-        @keyframes shake { 0% { transform: translate(2px, 2px); } 50% { transform: translate(-2px, -2px); } 100% { transform: translate(2px, -2px); } }
-
-        h1 { font-family: 'Dancing Script', cursive; color: var(--deep-red); font-size: clamp(1.8rem, 8vw, 2.4rem); margin-bottom: 10px; }
-        
-        .orbit-container { position: relative; height: 200px; display: flex; justify-content: center; align-items: center; width: 100%; }
-        
-        #yesBtn { 
-            padding: 14px 35px; font-size: 1.2rem; background: var(--primary-pink); 
-            color: white; border-radius: 50px; border: none; z-index: 100;
-            box-shadow: 0 10px 20px rgba(255, 77, 109, 0.4); cursor: pointer;
-        }
-
-        #noBtn { 
-            position: absolute; padding: 8px 20px; background: white; 
-            border: 2px solid var(--primary-pink); border-radius: 50px;
-            color: #666; font-size: 0.9rem; z-index: 99;
-        }
-
-        #game-canvas { 
-            position: relative; height: 35vh; width: 100%;
-            background: rgba(255,255,255,0.4); border-radius: 20px; 
-            overflow: hidden; margin: 15px 0; border: 2px dashed var(--primary-pink); 
-        }
-        .game-heart { position: absolute; cursor: pointer; font-size: 2.2rem; padding: 15px; transform: translate(-50%, -50%); }
-
-        /* Final Page Layout Fix */
-        .img-mask {
-            mask-image: radial-gradient(circle, black 50%, transparent 98%);
-            -webkit-mask-image: radial-gradient(circle, black 50%, transparent 98%);
-            width: 100%; max-height: 35vh; overflow: hidden;
-        }
-        .couple-img { width: 100%; height: auto; max-height: 35vh; object-fit: contain; border-radius: 20px; }
-
-        #final-text { font-family: 'Dancing Script'; color: var(--deep-red); font-size: 1.4rem; line-height: 1.3; margin-top: 15px; padding-bottom: 10px; }
-
-        .sparkle-wand { position: fixed; pointer-events: none; z-index: 1000; border-radius: 50%; background: white; box-shadow: 0 0 10px 3px var(--gold); }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Tribute to Praise | Happy Birthday</title>
+  
+  <!-- Beautiful Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
 </head>
-<body onmousemove="handleWand(event)" ontouchmove="handleWand(event.touches[0])">
+<body>
 
-    <div id="reveal-overlay"></div>
-    <div class="heart-bg" id="heartBg"></div>
-
-    <div id="container">
-        <div id="screen1" class="section active">
-            <h1>Be my Valentine, <br>Peey🌹</h1>
-            <p style="color: var(--deep-red); font-weight: 600; font-size: 0.9rem;">You can't deny love, say yes!</p>
-            <div class="orbit-container">
-                <button id="yesBtn" onclick="transitionTo(1, 2)">YES! ❤️💋</button>
-                <button id="noBtn" onmouseover="handleNoInteraction()" ontouchstart="handleNoInteraction()">No</button>
-            </div>
-        </div>
-
-        <div id="screen2" class="section">
-            <h1 style="font-size: 1.8rem;">Fight for us! ⚔️❤️</h1>
-            <div id="motivation-text" style="font-size: 1rem; color: var(--primary-pink); height: 25px;">Capture 10 hearts!</div>
-            <div id="game-canvas"></div>
-            <div id="score" style="font-weight: bold; color: var(--deep-red);">Captured: 0/10</div>
-        </div>
-
-        <div id="screen3" class="section">
-            <div class="img-mask">
-                <img src="https://i.postimg.cc/sDrrSQBn/IMG-0443.jpg" class="couple-img" alt="Us">
-            </div>
-            <div id="final-text">
-                I applaud the heavens for our unity. May this Valentine's be the most memorable one yet. I love you, Peey! 🌹✨
-            </div>
-        </div>
+  <!-- The Main Story Container -->
+  <div class="story-container" id="mainContainer">
+    
+    <!-- CHAPTER 1: THE WELCOME -->
+    <div class="chapter active" id="chapter1">
+      <div class="heart-icon">💝</div>
+      <h1>Today is everything...</h1>
+      <p>A specific moment in time dedicated entirely to the light you bring into this world.</p>
+      <button class="next-btn" onclick="nextChapter(2)">Because of You...</button>
     </div>
 
-    <script>
-        let yesScale = 1;
-        let orbitAngle = 0;
-        let gameScore = 0;
-        let gameActive = false;
-        let isFinalStage = false;
+    <!-- CHAPTER 2: THE PRAISE -->
+    <div class="chapter" id="chapter2">
+      <div class="heart-icon">🌟</div>
+      <h2>A Gift Named <span class="highlight">Praise</span></h2>
+      <p class="poem-intro">It’s fitting that they named you Praise, <br> for every moment spent in the warmth of your smile feels like an adoration.</p>
+      <button class="next-btn" onclick="nextChapter(3)">Let me show you...</button>
+    </div>
 
-        // Background Hearts
-        setInterval(() => {
-            const e = document.createElement('div');
-            e.className = 'floating-emoji';
-            e.innerText = ['❤️', '💖', '💍', '✨'][Math.floor(Math.random()*4)];
-            e.style.left = Math.random() * 95 + 'vw';
-            e.style.fontSize = (Math.random() * 20 + 15) + 'px';
-            e.style.animationDuration = (Math.random() * 3 + 4) + 's';
-            document.getElementById('heartBg').appendChild(e);
-            setTimeout(() => e.remove(), 5000);
-        }, 300);
+    <!-- CHAPTER 3: THE MESSAGE (Locked until now) -->
+    <div class="chapter" id="chapter3">
+      <div class="heart-icon">🎂</div>
+      <h2>Happy Birthday, Praise!</h2>
+      
+      <div class="final-message">
+        <p>You aren’t just a year older; you are a year more radiant, a year more profound, and a year deeper into the incredible story you are writing.</p>
+        
+        <p class="poem-stanza">You are the melody that silences the noise,<br>
+           The calm that settles the storm.</p>
+           
+        <p class="poem-stanza">Today, the world celebrates the day <br> it got a little brighter. I celebrate <br> the day my world found its meaning.</p>
+           
+        <p>Here’s to another magnificent orbit around the sun. You deserve every joy.</p>
+      </div>
 
-        function handleNoInteraction() {
-            const noBtn = document.getElementById('noBtn');
-            const yesBtn = document.getElementById('yesBtn');
-            const container = document.getElementById('container');
-            container.classList.add('vibrate');
-            setTimeout(() => container.classList.remove('vibrate'), 200);
-            yesScale = Math.min(yesScale + 0.1, 2.0);
-            yesBtn.style.transform = `scale(${yesScale})`;
-            orbitAngle += 0.8;
-            const radius = Math.min(window.innerWidth * 0.22, 90);
-            noBtn.style.transform = `translate(${Math.cos(orbitAngle)*radius}px, ${Math.sin(orbitAngle)*radius}px)`;
-        }
+      <!-- The dynamic interaction button -->
+      <button id="celebrateBtn">Let's Celebrate You! ✨</button>
+    </div>
 
-        function transitionTo(from, to) {
-            const overlay = document.getElementById('reveal-overlay');
-            const sFrom = document.getElementById(`screen${from}`);
-            const sTo = document.getElementById(`screen${to}`);
+  </div>
 
-            if (to === 3) {
-                // The "Super Slow & Beautiful" Transition
-                overlay.style.opacity = '1';
-                overlay.style.pointerEvents = 'auto';
-                
-                setTimeout(() => {
-                    sFrom.classList.remove('active');
-                    sTo.classList.add('active');
-                    startFireworks();
-                    isFinalStage = true;
-                    // Ease the overlay back out
-                    setTimeout(() => {
-                        overlay.style.opacity = '0';
-                        overlay.style.pointerEvents = 'none';
-                    }, 500);
-                }, 1500);
-            } else {
-                // Normal transition for screen 1 to 2
-                sFrom.style.opacity = '0';
-                setTimeout(() => {
-                    sFrom.classList.remove('active');
-                    sTo.classList.add('active');
-                    if(to === 2) startHeartGame();
-                }, 800);
-            }
-        }
-
-        function startHeartGame() {
-            gameActive = true;
-            spawnMovingHeart();
-            const phrases = ["Fight for our love! ❤️", "Don't let go! 💪", "Almost there, Peey!", "You're my champion! ✨"];
-            setInterval(() => { if(gameActive) document.getElementById('motivation-text').innerText = phrases[Math.floor(Math.random()*phrases.length)]; }, 2500);
-        }
-
-        function spawnMovingHeart() {
-            if (!gameActive) return;
-            const canvas = document.getElementById('game-canvas');
-            const h = document.createElement('div');
-            h.className = 'game-heart';
-            h.innerText = '💖';
-            canvas.appendChild(h);
-
-            let posX = 50, posY = 50;
-            let velX = (Math.random() - 0.5) * 7;
-            let velY = (Math.random() - 0.5) * 7;
-
-            const move = setInterval(() => {
-                posX += velX; posY += velY;
-                if(posX < 10 || posX > 90) velX *= -1;
-                if(posY < 10 || posY > 90) velY *= -1;
-                h.style.left = posX + '%'; h.style.top = posY + '%';
-            }, 30);
-
-            h.onclick = h.ontouchstart = (e) => {
-                e.preventDefault();
-                clearInterval(move);
-                h.remove();
-                gameScore++;
-                document.getElementById('score').innerText = `Captured: ${gameScore}/10`;
-                if(gameScore < 10) spawnMovingHeart();
-                else { gameActive = false; transitionTo(2, 3); }
-            };
-        }
-
-        function startFireworks() {
-            for(let i=0; i<15; i++) {
-                setTimeout(() => {
-                    const f = document.createElement('div');
-                    f.innerText = ['🌸','✨','❤️','💥','🌹'][Math.floor(Math.random()*5)];
-                    f.style.position = 'fixed';
-                    f.style.left = Math.random() * 90 + 'vw';
-                    f.style.top = '100vh';
-                    f.style.fontSize = '2.5rem';
-                    f.style.zIndex = '3000';
-                    document.body.appendChild(f);
-                    f.animate([{transform: 'translateY(0)', opacity: 1}, {transform: `translateY(-85vh) scale(5)`, opacity: 0}], {duration: 2500});
-                    setTimeout(() => f.remove(), 2500);
-                }, i * 350);
-            }
-        }
-
-        function handleWand(e) {
-            if(!isFinalStage) return;
-            const s = document.createElement('div');
-            s.className = 'sparkle-wand';
-            s.style.width = '12px'; s.style.height = '12px';
-            s.style.left = e.clientX + 'px'; s.style.top = e.clientY + 'px';
-            document.body.appendChild(s);
-            s.animate([{transform: 'scale(1)', opacity: 1}, {transform: `translate(${(Math.random()-0.5)*120}px, ${(Math.random()-0.5)*120}px) scale(0)`, opacity: 0}], {duration: 1000});
-            setTimeout(() => s.remove(), 1000);
-        }
-    </script>
+  <!-- Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
