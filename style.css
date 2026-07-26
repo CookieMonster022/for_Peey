@@ -5,17 +5,25 @@
   padding: 0;
 }
 
+html {
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   font-family: 'Poppins', sans-serif;
   /* Deep, sophisticated pink/purple gradient */
   background: linear-gradient(135deg, #2d132c 0%, #801336 50%, #c72c41 100%);
+  background-attachment: fixed;
   color: #fff;
   min-height: 100vh;
+  min-height: 100dvh; /* Accounts for mobile browser UI bars */
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden; /* Keeps confetti within view */
-  padding: 20px;
+  overflow-x: hidden;
+  overflow-y: auto; /* Allow scrolling on short/small screens instead of clipping */
+  padding: clamp(15px, 4vw, 20px);
 }
 
 /* Container defining the focal point */
@@ -23,50 +31,70 @@ body {
   position: relative;
   width: 100%;
   max-width: 600px;
+  margin: auto;
   perspective: 1000px; /* Essential for chapter transitions */
+  transition: height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Chapter Setup */
+/* Chapter Setup - stacked absolutely for a seamless crossfade at any screen size */
 .chapter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
   background: rgba(255, 255, 255, 0.05); /* Semi-transparent frosted look */
   backdrop-filter: blur(10px);
-  padding: 50px 40px;
-  border-radius: 30px;
+  -webkit-backdrop-filter: blur(10px);
+  padding: clamp(28px, 6vw, 50px) clamp(20px, 5vw, 40px);
+  border-radius: clamp(18px, 4vw, 30px);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
   text-align: center;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  
-  /* Hidden by default, animated in by JS */
-  display: none;
+
+  /* Hidden by default, animated in/out smoothly */
   opacity: 0;
-  transform: rotateX(-15deg) translateY(30px);
-  transition: opacity 0.8s ease, transform 0.8s ease, display 0.8s ease allow-discrete;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(25px) scale(0.96);
+  transition:
+    opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0s linear 0.6s;
+  will-change: opacity, transform;
 }
 
 /* Visible Chapter Class */
 .chapter.active {
-  display: block;
+  position: relative; /* Lets the container measure & size around the active chapter */
   opacity: 1;
-  transform: rotateX(0deg) translateY(0px);
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+  transition:
+    opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0s linear 0s;
 }
 
-/* Typography */
+/* Typography - fluid sizing across all screen widths */
 h1 {
-  font-size: 2.5rem;
+  font-size: clamp(1.7rem, 5.5vw, 2.5rem);
   margin-bottom: 20px;
   font-weight: 600;
-  text-shadow: 0 2px 10px rgba(255,255,255,0.3);
+  text-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
+  line-height: 1.3;
 }
 
 h2 {
   font-family: 'Dancing Script', cursive; /* Special font for her name/headers */
-  font-size: 3rem;
+  font-size: clamp(2rem, 8vw, 3rem);
   color: #fecfef;
   margin-bottom: 25px;
+  line-height: 1.2;
 }
 
 p {
-  font-size: 1.1rem;
+  font-size: clamp(0.95rem, 2.8vw, 1.1rem);
   line-height: 1.8;
   color: #fce4ec;
   margin-bottom: 30px;
@@ -105,27 +133,36 @@ p {
 
 /* Icons/Emojis */
 .heart-icon {
-  font-size: 4rem;
+  font-size: clamp(2.5rem, 9vw, 4rem);
   margin-bottom: 20px;
   display: inline-block;
   animation: float 3s ease-in-out infinite;
 }
 
 /* Buttons */
-.next-btn, #celebrateBtn {
+.next-btn,
+#celebrateBtn {
   background: transparent;
   color: #fff;
   border: 2px solid rgba(255, 255, 255, 0.5);
-  padding: 15px 35px;
-  font-size: 1.1rem;
+  padding: clamp(12px, 3vw, 15px) clamp(24px, 6vw, 35px);
+  font-size: clamp(0.95rem, 2.8vw, 1.1rem);
   font-weight: 600;
   border-radius: 50px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+  -webkit-tap-highlight-color: transparent;
+  max-width: 100%;
+  white-space: normal;
 }
 
-.next-btn:hover, #celebrateBtn:hover {
+.next-btn:hover,
+#celebrateBtn:hover {
   background: #fff;
   color: #801336;
   border-color: #fff;
@@ -133,17 +170,80 @@ p {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
+.next-btn:active,
+#celebrateBtn:active {
+  transform: translateY(-1px) scale(0.98);
+  transition-duration: 0.15s;
+}
+
 /* The Final interaction button special styling */
 #celebrateBtn {
   background: linear-gradient(45deg, #ff5e7e, #ff9a9e);
   border: none;
-  font-size: 1.2rem;
-  padding: 18px 40px;
+  font-size: clamp(1rem, 3vw, 1.2rem);
+  padding: clamp(15px, 3.5vw, 18px) clamp(28px, 7vw, 40px);
   box-shadow: 0 5px 20px rgba(255, 94, 126, 0.5);
 }
 
 /* Animations */
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-15px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+/* Small phones */
+@media (max-width: 380px) {
+  .chapter {
+    padding: 24px 18px;
+    border-radius: 20px;
+  }
+
+  .heart-icon {
+    margin-bottom: 14px;
+  }
+
+  p {
+    margin-bottom: 22px;
+  }
+}
+
+/* Very short viewports (landscape phones, small laptops) */
+@media (max-height: 480px) {
+  body {
+    align-items: flex-start;
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+
+  .heart-icon {
+    font-size: clamp(2rem, 6vh, 3rem);
+    margin-bottom: 10px;
+  }
+
+  p {
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+}
+
+/* Large screens - keep things comfortably readable, not stretched */
+@media (min-width: 1400px) {
+  .story-container {
+    max-width: 680px;
+  }
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
